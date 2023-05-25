@@ -1,0 +1,20 @@
+CREATE TABLE customers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  password_hash VARCHAR(64) NOT NULL,
+  phone_number VARCHAR(20) NOT NULL
+);
+
+
+CREATE TABLE accounts (
+    account_number CHAR(20) PRIMARY KEY,
+    customer_id INT NOT NULL,
+    account_type ENUM('CHECKING', 'SAVINGS') NOT NULL,
+    balance DECIMAL(10, 2) NOT NULL,
+    overdraft_limit DECIMAL(10, 2),
+    interest_rate DECIMAL(5, 4),
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+
