@@ -1,4 +1,4 @@
-package account;
+package model.account;
 
 import exception.InsufficientFundsException;
 import util.AccountNumberGenerator;

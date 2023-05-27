@@ -1,4 +1,4 @@
-package transaction;
+package model.transaction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

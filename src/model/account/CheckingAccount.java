@@ -1,30 +1,31 @@
-package account;
+package model.account;
 
 import exception.InsufficientFundsException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SavingsAccount extends Account {
-    private double interestRate;
+public class CheckingAccount extends Account {
+    private double overdraftLimit;
 
-    public SavingsAccount(int customerId, double interestRate) {
+    public CheckingAccount(int customerId, double overdraftLimit) {
         super(customerId);
-        this.interestRate = interestRate;
+        this.overdraftLimit = overdraftLimit;
     }
 
-    public SavingsAccount(ResultSet dataOut) throws SQLException {
+    public CheckingAccount(ResultSet dataOut) throws SQLException {
         super(dataOut);
-        this.interestRate = dataOut.getDouble("interest_rate");
+        this.overdraftLimit = dataOut.getDouble("overdraft_limit");
     }
 
-    public double getInterestRate() {
-        return interestRate;
+    public double getOverdraftLimit() {
+        return overdraftLimit;
     }
 
     @Override
     public void withdraw(double amount) throws InsufficientFundsException {
-        if (getBalance() >= amount) {
+        double availableBalance = getBalance() + overdraftLimit;
+        if (availableBalance >= amount) {
             // Sufficient funds, perform withdrawal
             setBalance(getBalance() - amount);
             System.out.println("Withdrawal successful. Current balance: " + getBalance());
@@ -35,13 +36,11 @@ public class SavingsAccount extends Account {
 
     @Override
     public String toString() {
-        return "SavingsAccount{" +
-                "interestRate=" + interestRate +
+        return "CheckingAccount{" +
+                "overdraftLimit=" + overdraftLimit +
                 ", accountNumber='" + getAccountNumber() + '\'' +
                 ", balance=" + getBalance() +
                 ", customerId=" + getCustomerId() +
                 '}';
     }
-
 }
-

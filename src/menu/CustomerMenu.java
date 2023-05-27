@@ -1,4 +1,6 @@
-package customer;
+package menu;
+
+import service.CustomerService;
 
 import java.util.Scanner;
 

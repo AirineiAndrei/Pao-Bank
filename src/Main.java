@@ -1,15 +1,12 @@
-import account.AccountMenu;
-import customer.CustomerMenu;
-import transaction.Transaction;
-import transaction.TransactionMenu;
+import menu.TransactionMenu;
 
 public class Main {
     public static void main(String[] args) {
-//        Menu menu = new Menu();
-//        menu.displayMenu();
-
-        TransactionMenu menu = new TransactionMenu();
+        menu.Menu menu = new menu.Menu();
         menu.displayMenu();
+
+//        TransactionMenu menu = new TransactionMenu();
+//        menu.displayMenu();
 
     }
 }

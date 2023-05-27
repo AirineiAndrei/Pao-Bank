@@ -1,11 +1,9 @@
-package transaction;
+package service;
 
-import account.AccountService;
-import customer.Customer;
 import database.DatabaseOperator;
+import model.transaction.Transaction;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

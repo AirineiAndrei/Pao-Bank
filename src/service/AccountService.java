@@ -1,11 +1,14 @@
-package account;
+package service;
 
-import customer.Customer;
-import customer.CustomerService;
+import model.customer.Customer;
 import database.DatabaseOperator;
 import exception.FailedLoginException;
 import exception.InsufficientFundsException;
-import transaction.Transaction;
+import model.account.Account;
+import model.account.AccountType;
+import model.account.CheckingAccount;
+import model.account.SavingsAccount;
+import model.transaction.Transaction;
 
 import java.sql.*;
 import java.util.*;

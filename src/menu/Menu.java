@@ -1,9 +1,5 @@
-// com.bank.menu.Menu.java
+package menu;// com.bank.menu.menu.Menu.java
 
-
-import account.AccountMenu;
-import customer.CustomerMenu;
-import transaction.TransactionMenu;
 
 import java.util.Scanner;
 
@@ -26,9 +22,9 @@ public class Menu {
 
         while (!exit) {
             System.out.println("===== BANK MANAGEMENT SYSTEM =====");
-            System.out.println("1. customer.Customer Management");
-            System.out.println("2. account.Account Management");
-            System.out.println("3. transaction.Transaction Management");
+            System.out.println("1. Customer Management");
+            System.out.println("2. Account Management");
+            System.out.println("3. Transaction Management");
             System.out.println("4. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();

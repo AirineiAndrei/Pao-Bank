@@ -1,7 +1,8 @@
-package customer;
+package service;
 
 import database.DatabaseOperator;
 import exception.FailedLoginException;
+import model.customer.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
