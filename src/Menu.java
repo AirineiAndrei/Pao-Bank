@@ -3,6 +3,7 @@
 
 import account.AccountMenu;
 import customer.CustomerMenu;
+import transaction.TransactionMenu;
 
 import java.util.Scanner;
 
@@ -27,7 +28,7 @@ public class Menu {
             System.out.println("===== BANK MANAGEMENT SYSTEM =====");
             System.out.println("1. customer.Customer Management");
             System.out.println("2. account.Account Management");
-            System.out.println("3. Transaction Management");
+            System.out.println("3. transaction.Transaction Management");
             System.out.println("4. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();

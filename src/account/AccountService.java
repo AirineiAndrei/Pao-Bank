@@ -3,6 +3,7 @@ package account;
 import customer.Customer;
 import customer.CustomerService;
 import database.DatabaseOperator;
+import transaction.Transaction;
 
 import java.sql.*;
 import java.util.*;
@@ -206,5 +207,103 @@ public class AccountService {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    private void updateAccount(Account account)
+    {
+        try {
+            String query = "UPDATE `pao`.`accounts`\n" +
+                    "SET\n" +
+                    "`customer_id` = ?,\n" +
+                    "`account_number` = ?,\n" +
+                    "`account_type` = ?,\n" +
+                    "`balance` = ?,\n" +
+                    "`overdraft_limit` = ?,\n" +
+                    "`interest_rate` = ?\n" +
+                    "WHERE `account_number` = ?;\n";
+            PreparedStatement preparedStatement = database.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1,account.getCustomerId());
+            preparedStatement.setString(2,account.getAccountNumber());
+            preparedStatement.setDouble(4,account.getBalance());
+            if(account instanceof CheckingAccount checkingAccount)
+            {
+                preparedStatement.setString(3,AccountType.CHECKING.name());
+                preparedStatement.setDouble(5,checkingAccount.getOverdraftLimit());
+                preparedStatement.setNull(6, Types.DOUBLE);
+            }
+            if(account instanceof SavingsAccount savingsAccount)
+            {
+                preparedStatement.setString(3,AccountType.SAVINGS.name());
+                preparedStatement.setNull(5, Types.DOUBLE);
+                preparedStatement.setDouble(6,savingsAccount.getInterestRate());
+            }
+            preparedStatement.setString(7, account.getAccountNumber());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+    }
+    public Transaction deposit(Scanner in)
+    {
+        if(loggedCustomer == null)
+        {
+            System.out.println("Please login to deposit");
+            login(in);
+        }
+        System.out.print("Enter account number: ");
+        String accountNumber = in.nextLine();
+        Account account = getAccountByNumber(accountNumber);
+        if (account != null) {
+            System.out.println("Enter amount to deposit:");
+            double amount = in.nextInt();
+            account.deposit(amount);
+            updateAccount(account);
+            return new Transaction(account.getAccountNumber(),
+                                    "Deposit manual",
+                                    amount,
+                                    "Deposit",
+                                    null,
+                                    null);
+        } else {
+            System.out.println("Account not found.");
+            return null;
+        }
+    }
+
+    public Transaction withdraw(Scanner in) {
+        if(loggedCustomer == null)
+        {
+            System.out.println("Please login to deposit");
+            login(in);
+        }
+        System.out.print("Enter account number: ");
+        String accountNumber = in.nextLine();
+        Account account = getAccountByNumber(accountNumber);
+        if (account != null) {
+            System.out.println("Enter amount to withdraw:");
+            double amount = in.nextInt();
+            account.withdraw(amount);
+            updateAccount(account);
+            return new Transaction(account.getAccountNumber(),
+                    "Withdraw manual",
+                    amount,
+                    "Withdraw",
+                    null,
+                    null);
+        } else {
+            System.out.println("Account not found.");
+            return null;
+        }
+    }
+
+    public Transaction transfer(Scanner in) {
+        if (loggedCustomer == null) {
+            System.out.println("Please login to deposit");
+            login(in);
+        }
+        //TODO
+        return null;
     }
 }

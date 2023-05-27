@@ -18,3 +18,14 @@ CREATE TABLE accounts (
     FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
 
+CREATE TABLE transactions (
+    transaction_id INT PRIMARY KEY,
+    account_number CHAR(20),
+    timestamp DATETIME,
+    description VARCHAR(255),
+    amount DECIMAL(10,2),
+    transaction_type VARCHAR(20),
+    source_account CHAR(20),
+    destination_account CHAR(20)
+);
+

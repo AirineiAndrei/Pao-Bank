@@ -82,10 +82,9 @@ public class CustomerService {
             System.out.println(e.toString());
         }
     }
-    private void updateCustomer(Customer customer,Scanner in)
+    private void updateCustomer(Customer customer)
     {
         try {
-            customer.read(in);
             String query = "UPDATE `pao`.`customers`\n" +
                     "SET\n" +
                     "`first_name` = ?,\n" +
@@ -114,7 +113,8 @@ public class CustomerService {
         String email = in.nextLine();
         customer.Customer customer = getCustomerByEmail(email);
         if (customer != null) {
-            updateCustomer(customer,in);
+            customer.read(in);
+            updateCustomer(customer);
         } else {
             System.out.println("Customer not found.");
         }
