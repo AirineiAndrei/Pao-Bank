@@ -1,5 +1,6 @@
 import account.AccountMenu;
 import customer.CustomerMenu;
+import transaction.Transaction;
 import transaction.TransactionMenu;
 
 public class Main {
@@ -7,7 +8,7 @@ public class Main {
 //        Menu menu = new Menu();
 //        menu.displayMenu();
 
-        CustomerMenu menu = new CustomerMenu();
+        TransactionMenu menu = new TransactionMenu();
         menu.displayMenu();
 
     }

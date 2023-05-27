@@ -19,7 +19,7 @@ CREATE TABLE accounts (
 );
 
 CREATE TABLE transactions (
-    transaction_id INT PRIMARY KEY,
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     account_number CHAR(20),
     timestamp DATETIME,
     description VARCHAR(255),

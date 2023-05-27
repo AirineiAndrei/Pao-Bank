@@ -1,5 +1,7 @@
 package account;
 
+import exception.FailedLoginException;
+
 import java.util.Scanner;
 
 public class AccountMenu {
@@ -28,7 +30,13 @@ public class AccountMenu {
             scanner.nextLine(); // Consume the newline character
 
             switch (choice) {
-                case 1 -> accountService.login(scanner);
+                case 1 -> {
+                    try {
+                        accountService.login(scanner);
+                    } catch (FailedLoginException e) {
+                        System.out.println(e.toString());
+                    }
+                }
                 case 2 -> accountService.logout();
                 case 3 -> accountService.createAccount(scanner);
                 case 4 -> accountService.deleteAccount(scanner);

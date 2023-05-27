@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Customer {
@@ -20,10 +21,11 @@ public class Customer {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
-    public Customer(Scanner in)
-    {
+
+    public Customer(Scanner in) {
         read(in);
     }
+
     public Customer(ResultSet dataOut) throws SQLException {
         this.id = dataOut.getInt("id");
         this.firstName = dataOut.getString("first_name");
@@ -32,8 +34,8 @@ public class Customer {
         this.passwordHash = dataOut.getString("password_hash");
         this.phoneNumber = dataOut.getString("phone_number");
     }
-    void read(Scanner in)
-    {
+
+    public void read(Scanner in) {
         System.out.print("Enter customer First Name: ");
         this.firstName = in.nextLine();
         System.out.print("Enter customer Last Name: ");
@@ -48,14 +50,15 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "customer.Customer{" +
+        return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                "}\n";
+                '}';
     }
+
     public boolean authenticate(String password) {
         String hashedPassword = hashPassword(password);
         return passwordHash.equals(hashedPassword);
@@ -72,9 +75,11 @@ public class Customer {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
+
+    // Getters and setters
 
     public int getId() {
         return id;
@@ -93,7 +98,7 @@ public class Customer {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = Objects.requireNonNull(firstName, "First name cannot be null");
     }
 
     public String getLastName() {
@@ -101,7 +106,7 @@ public class Customer {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = Objects.requireNonNull(lastName, "Last name cannot be null");
     }
 
     public String getEmail() {
@@ -109,7 +114,7 @@ public class Customer {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = Objects.requireNonNull(email, "Email cannot be null");
     }
 
     public String getPhoneNumber() {
@@ -117,6 +122,6 @@ public class Customer {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = Objects.requireNonNull(phoneNumber, "Phone number cannot be null");
     }
 }

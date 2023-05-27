@@ -73,6 +73,31 @@ public class TransactionService {
         }
     }
 
+    private void updateTransactionInDatabase(Transaction transaction) {
+        String query = "UPDATE transactions SET description = ? WHERE transaction_id = ?";
+        try {
+            PreparedStatement preparedStatement = database.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, transaction.getDescription());
+            preparedStatement.setInt(2, transaction.getTransactionId());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    private void deleteTransactionFromDatabase(int transactionId) {
+        String query = "DELETE FROM transactions WHERE transaction_id = ?";
+        try {
+            PreparedStatement preparedStatement = database.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, transactionId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+
     public void deposit(Scanner in)
     {
         Transaction transaction = accountService.deposit(in);
@@ -85,8 +110,6 @@ public class TransactionService {
         if(transaction != null)
             insertTransaction(transaction);
     }
-
-
     public void transfer(Scanner in) {
         Transaction transaction = accountService.transfer(in);
         if(transaction != null)

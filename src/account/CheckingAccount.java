@@ -1,5 +1,7 @@
 package account;
 
+import exception.InsufficientFundsException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,6 +12,7 @@ public class CheckingAccount extends Account {
         super(customerId);
         this.overdraftLimit = overdraftLimit;
     }
+
     public CheckingAccount(ResultSet dataOut) throws SQLException {
         super(dataOut);
         this.overdraftLimit = dataOut.getDouble("overdraft_limit");
@@ -20,13 +23,14 @@ public class CheckingAccount extends Account {
     }
 
     @Override
-    public void withdraw(double amount) {
-        if (getBalance() - amount >= -overdraftLimit) {
+    public void withdraw(double amount) throws InsufficientFundsException {
+        double availableBalance = getBalance() + overdraftLimit;
+        if (availableBalance >= amount) {
             // Sufficient funds, perform withdrawal
-            balance = getBalance() - amount;
+            setBalance(getBalance() - amount);
             System.out.println("Withdrawal successful. Current balance: " + getBalance());
         } else {
-            System.out.println("Insufficient funds. Withdrawal rejected.");
+            throw new InsufficientFundsException("Insufficient funds. Withdrawal rejected.");
         }
     }
 
@@ -34,9 +38,9 @@ public class CheckingAccount extends Account {
     public String toString() {
         return "CheckingAccount{" +
                 "overdraftLimit=" + overdraftLimit +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", balance=" + balance +
-                ", customerId=" + customerId +
+                ", accountNumber='" + getAccountNumber() + '\'' +
+                ", balance=" + getBalance() +
+                ", customerId=" + getCustomerId() +
                 '}';
     }
 }

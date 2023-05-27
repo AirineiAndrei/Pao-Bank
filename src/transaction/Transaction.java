@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Transaction {
+    private int transactionId;
     private String accountNumber;
     private Date timestamp;
     private String description;
@@ -45,6 +46,14 @@ public class Transaction {
     }
     // Getter and Setter methods
 
+
+    public int getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
+    }
 
     public String getAccountNumber() {
         return accountNumber;
