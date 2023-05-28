@@ -2,16 +2,18 @@ package service;
 
 import database.DatabaseOperator;
 import model.transaction.Transaction;
+import model.transaction.comparator.TransactionComparator;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class TransactionService {
     private static TransactionService instance;
-    private List<Transaction> transactions;
-    private AccountService accountService;
+    private final TreeSet<Transaction> transactions;
+    private final AccountService accountService;
     DatabaseOperator database = DatabaseOperator.getInstance();
     private void loadState() {
         try {
@@ -28,7 +30,8 @@ public class TransactionService {
         }
     }
     private TransactionService() {
-        transactions = new ArrayList<>();
+        TransactionComparator comparator = new TransactionComparator();
+        transactions = new TreeSet<>(comparator);
         accountService = AccountService.getInstance();
         loadState();
     }

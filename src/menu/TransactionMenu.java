@@ -6,10 +6,9 @@ import service.TransactionService;
 import java.util.List;
 
 public class TransactionMenu extends Menu {
-    private final TransactionService transactionService;
 
     public TransactionMenu() {
-        transactionService = TransactionService.getInstance();
+        TransactionService transactionService = TransactionService.getInstance();
         menuOptions = List.of(
                 new MenuOption("Deposit", transactionService::deposit),
                 new MenuOption("Withdraw", transactionService::withdraw),

@@ -1,19 +1,14 @@
 package menu;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class MainMenu extends Menu {
 
-    private CustomerMenu customerMenu;
-    private AccountMenu accountMenu;
-    private TransactionMenu transactionMenu;
-
     public MainMenu() {
         super();
-        customerMenu = new CustomerMenu();
-        accountMenu = new AccountMenu();
-        transactionMenu = new TransactionMenu();
+        CustomerMenu customerMenu = new CustomerMenu();
+        AccountMenu accountMenu = new AccountMenu();
+        TransactionMenu transactionMenu = new TransactionMenu();
         menuOptions = List.of(
                 new MenuOption("Customer Management", customerMenu::displayMenu),
                 new MenuOption("Account Management", accountMenu::displayMenu),

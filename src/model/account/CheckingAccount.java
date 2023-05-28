@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CheckingAccount extends Account {
-    private double overdraftLimit;
+    private final double overdraftLimit;
 
     public CheckingAccount(int customerId,String currencyName, double overdraftLimit) throws InvalidCurrencyException {
         super(customerId,currencyName);

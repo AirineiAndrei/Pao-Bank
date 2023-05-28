@@ -15,8 +15,8 @@ import java.util.*;
 
 public class AccountService {
     private static AccountService instance;
-    private Map<Integer, List<Account>> accountMap;
-    private CustomerService customerService;
+    private final Map<Integer, List<Account>> accountMap;
+    private final CustomerService customerService;
     private Customer loggedCustomer;
     private final DatabaseOperator database = DatabaseOperator.getInstance();
 

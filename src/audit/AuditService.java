@@ -7,12 +7,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class AuditService {
     private static final String CSV_FILE_PATH = "audit.csv";
     private static final String CSV_SEPARATOR = ",";
@@ -48,7 +42,9 @@ public class AuditService {
         File file = new File(CSV_FILE_PATH);
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                boolean exist = file.createNewFile();
+                if(!exist)
+                    throw new RuntimeException("Unable to create audit file...");
             } catch (IOException e) {
                 System.out.println("Failed to create audit file: " + e.getMessage());
             }

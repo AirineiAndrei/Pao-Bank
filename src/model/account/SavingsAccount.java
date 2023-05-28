@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SavingsAccount extends Account {
-    private double interestRate;
+    private final double interestRate;
 
     public SavingsAccount(int customerId,String currencyName, double interestRate) throws InvalidCurrencyException {
         super(customerId,currencyName);

@@ -5,9 +5,8 @@ import service.CustomerService;
 import java.util.List;
 
 public class CustomerMenu extends Menu {
-    private final CustomerService customerService;
     public CustomerMenu() {
-        customerService = CustomerService.getInstance();
+        CustomerService customerService = CustomerService.getInstance();
         menuOptions = List.of(
                 new MenuOption("Create Customer", customerService::createCustomer),
                 new MenuOption("Update Customer", customerService::updateCustomer),

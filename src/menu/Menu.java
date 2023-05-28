@@ -24,7 +24,7 @@ public abstract class Menu {
 
             // Display the menu options
             for (int i = 0; i < menuOptions.size(); i++) {
-                System.out.println((i + 1) + ". " + menuOptions.get(i).getOptionName());
+                System.out.println((i + 1) + ". " + menuOptions.get(i).optionName());
             }
 
             try {
@@ -35,10 +35,10 @@ public abstract class Menu {
                 if (choice >= 1 && choice <= menuOptions.size()) {
                     MenuOption selectedOption = menuOptions.get(choice - 1);
 
-                    if (selectedOption.getAction() == null) {
+                    if (selectedOption.action() == null) {
                         exit = true;
                     } else {
-                        performAction(selectedOption.getOptionName(), selectedOption.getAction(),scanner);
+                        performAction(selectedOption.optionName(), selectedOption.action(),scanner);
                     }
                 } else {
                     System.out.println("Invalid choice. Please try again.");
