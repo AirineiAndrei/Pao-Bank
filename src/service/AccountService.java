@@ -167,13 +167,26 @@ public class AccountService {
 
     public Account getAccountByNumber(String accountNumber) {
         if(accountMap.containsKey(loggedCustomer.getId()))
-        for (Account account : accountMap.get(loggedCustomer.getId())) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                return account;
+            for (Account account : accountMap.get(loggedCustomer.getId())) {
+                if (account.getAccountNumber().equals(accountNumber)) {
+                    return account;
+                }
+            }
+        return null;
+    }
+
+    public Account getAccountByNumberAcrossCustomers(String accountNumber) {
+        for (Map.Entry<Integer, List<Account>> entry : accountMap.entrySet()) {
+            List<Account> accounts = entry.getValue();
+            for (Account account : accounts) {
+                if (account.getAccountNumber().equals(accountNumber)) {
+                    return account;
+                }
             }
         }
         return null;
     }
+
 
     public void viewAccountDetails(Scanner in) {
         try {
@@ -346,7 +359,7 @@ public class AccountService {
 
             System.out.print("Enter destination account number: ");
             String destinationAccountNumber = in.nextLine();
-            Account destinationAccount = getAccountByNumber(destinationAccountNumber);
+            Account destinationAccount = getAccountByNumberAcrossCustomers(destinationAccountNumber);
 
             if (destinationAccount == null) {
                 System.out.println("Destination account not found.");
