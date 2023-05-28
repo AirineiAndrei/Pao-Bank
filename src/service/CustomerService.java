@@ -4,10 +4,7 @@ import database.DatabaseOperator;
 import exception.FailedLoginException;
 import model.customer.Customer;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -143,7 +140,14 @@ public class CustomerService {
         String email = in.nextLine();
         Customer customer = getCustomerByEmail(email);
         if (customer != null) {
-            deleteCustomer(customer);
+            try{
+                deleteCustomer(customer);
+            }
+            catch (RuntimeException e)
+            {
+                System.out.println("Please make sure to close all the accounts at our bank before deleting...");
+            }
+
             return true;
         } else {
             System.out.println("Customer not found.");

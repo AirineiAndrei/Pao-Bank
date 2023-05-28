@@ -26,7 +26,6 @@ public class TransactionService {
             System.out.print("Failed to load state of customers database\n");
             System.out.println(e.toString());
         }
-        System.out.println(transactions);
     }
     private TransactionService() {
         transactions = new ArrayList<>();

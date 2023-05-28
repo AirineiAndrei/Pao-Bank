@@ -1,27 +1,41 @@
 package model.account;
 
 import exception.InsufficientFundsException;
+import exception.InvalidCurrencyException;
+import model.currency.Currency;
+import factory.CurrencyFactory;
 import util.AccountNumberGenerator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public abstract class Account {
     protected String accountNumber;
     protected double balance;
     protected int customerId;
 
-    public Account(int customerId) {
+    protected Currency currency;
+
+    public Account(int customerId,String currencyCode) throws InvalidCurrencyException{
         this.accountNumber = AccountNumberGenerator.generateAccountNumber();
         this.customerId = customerId;
         this.balance = 0.0;
+        this.currency = CurrencyFactory.getCurrencyByName(currencyCode);
+
+        if(this.currency == null)
+            throw new InvalidCurrencyException("This bank doesnt support this currency...");
+
     }
 
     public Account(ResultSet dataOut) throws SQLException {
         this.accountNumber = dataOut.getString("account_number");
         this.balance = dataOut.getDouble("balance");
         this.customerId = dataOut.getInt("customer_id");
+        this.currency = CurrencyFactory.getCurrencyById(dataOut.getInt("currency_id"));
+    }
+    public boolean canTransfer(Account other)
+    {
+        return this.currency.equals(other.currency);
     }
 
     public String getAccountNumber() {
@@ -48,10 +62,14 @@ public abstract class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
-                "accountNumber='" + accountNumber + '\'' +
-                ", balance=" + balance +
-                ", customerId=" + customerId +
-                '}';
+        return "Account:\n"
+                + "Account Number: " + accountNumber + '\n'
+                + "Balance: " + balance + " " + currency.getSymbol() + '\n'
+                + "Customer ID: " + customerId + '\n';
+    }
+
+
+    public Currency getCurrency() {
+        return currency;
     }
 }

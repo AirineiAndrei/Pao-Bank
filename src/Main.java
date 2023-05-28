@@ -1,3 +1,4 @@
+import menu.AccountMenu;
 import menu.TransactionMenu;
 
 public class Main {
@@ -5,7 +6,7 @@ public class Main {
         menu.Menu menu = new menu.Menu();
         menu.displayMenu();
 
-//        TransactionMenu menu = new TransactionMenu();
+//        AccountMenu menu = new AccountMenu();
 //        menu.displayMenu();
 
     }

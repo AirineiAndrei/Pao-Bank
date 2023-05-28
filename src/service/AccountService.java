@@ -77,7 +77,6 @@ public class AccountService {
             System.out.print("Failed to load state of accounts database\n");
             System.out.println(e.toString());
         }
-        System.out.println(accountMap.toString());
     }
 
     private void addAccount(Account account) {
@@ -92,9 +91,10 @@ public class AccountService {
                 "`account_type`,\n" +
                 "`balance`,\n" +
                 "`overdraft_limit`,\n" +
-                "`interest_rate`)\n" +
+                "`interest_rate`,\n" +
+                "`currency_id`)\n" +
                 "VALUES\n" +
-                "(?,?,?,?,?,?);\n";
+                "(?,?,?,?,?,?,?);\n";
 
         try {
             PreparedStatement preparedStatement = database.getConnection().prepareStatement(query);
@@ -111,6 +111,7 @@ public class AccountService {
                 preparedStatement.setNull(5, Types.DOUBLE);
                 preparedStatement.setDouble(6, savingsAccount.getInterestRate());
             }
+            preparedStatement.setInt(7,account.getCurrency().getCurrencyId());
             preparedStatement.execute();
             preparedStatement.close();
 
@@ -136,17 +137,20 @@ public class AccountService {
                 return;
             }
 
+            System.out.println("Enter account currency");
+            String currencyName = in.nextLine();
+
             Account account;
             switch (accountType) {
                 case CHECKING -> {
                     System.out.println("Enter account overdraft limit");
                     double overdraftLimit = in.nextDouble();
-                    account = new CheckingAccount(loggedCustomer.getId(), overdraftLimit);
+                    account = new CheckingAccount(loggedCustomer.getId(),currencyName, overdraftLimit);
                 }
                 case SAVINGS -> {
                     System.out.println("Enter account interest rate");
                     double interestRate = in.nextDouble();
-                    account = new SavingsAccount(loggedCustomer.getId(), interestRate);
+                    account = new SavingsAccount(loggedCustomer.getId(),currencyName, interestRate);
                 }
                 default -> {
                     System.out.println("Unsupported account type. Exiting...");
@@ -156,7 +160,7 @@ public class AccountService {
             addAccount(account);
             insertAccount(account);
             System.out.println("Your new account number is " + account.getAccountNumber());
-        } catch (FailedLoginException e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
@@ -346,6 +350,12 @@ public class AccountService {
 
             if (destinationAccount == null) {
                 System.out.println("Destination account not found.");
+                return null;
+            }
+
+            if(!destinationAccount.canTransfer(sourceAccount)){
+                System.out.println("These accounts have different currency, our bank doesnt support exchange yet...");
+                System.out.println("We are sorry for the inconvenience");
                 return null;
             }
 
