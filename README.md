@@ -20,7 +20,7 @@ The Bank Management System is a software application designed to facilitate the 
 
 The Bank Management System provides a robust and user-friendly interface for bank administrators and employees to efficiently manage customer accounts, perform financial transactions, and ensure the security and integrity of the banking operations.
 
-# Interogari
+# Actions
 
 - Create Customer
 - Update Customer
@@ -34,6 +34,22 @@ The Bank Management System provides a robust and user-friendly interface for ban
 - Deposit
 - Withdraw
 - Transfer (between account of the same currency)
+
+# Obiecte
+- Customer - data about customer (name, email, phone number), authentificate and hashing of password
+- Currency - currency code, name and symbol from the database
+
+- Account - abstract class, accountNumber, balance, currency type deposit function
+- CheckingAccount - extends Account, implement ovedraftLimit in withdraw
+- SavingsAccount -  extend Account , interestRate
+- Account number Generator - util class to generate the account number
+
+- Transactions - to log all the transactions that happend, has comparator
+
+- Menu - abstract class implements a menu generic class using functional programming to call the actions on the services
+- CustomerMenu, AccountMenu, TransactionsMenu, MainMenu -> extends the Menu class mapping the actions to the corresponding functions in the servicess
+- CustomerService, AccountService,DatabaseService -> implement the queries on the database and the logic of the actions
+- CurrencyFactory -> used to get currency details from the 3 letter code
 
 # Database schema
 
