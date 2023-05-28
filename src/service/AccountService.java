@@ -33,7 +33,7 @@ public class AccountService {
         return instance;
     }
 
-    public void logout() {
+    public void logout(Scanner in) {
         loggedCustomer = null;
     }
 

@@ -1,13 +1,11 @@
-import menu.AccountMenu;
-import menu.TransactionMenu;
+import menu.MainMenu;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        menu.Menu menu = new menu.Menu();
-        menu.displayMenu();
-
-//        AccountMenu menu = new AccountMenu();
-//        menu.displayMenu();
-
+        MainMenu menu = new MainMenu();
+        Scanner scanner = new Scanner(System.in);
+        menu.displayMenu(scanner);
     }
 }

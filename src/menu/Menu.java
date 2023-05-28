@@ -1,51 +1,58 @@
-package menu;// com.bank.menu.menu.Menu.java
+package menu;
 
+import audit.AuditService;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.function.Consumer;
 
-public class Menu {
-    private Scanner scanner;
-    private CustomerMenu customerMenu;
-    private AccountMenu accountMenu;
-    private TransactionMenu transactionMenu;
+public abstract class Menu {
+    protected List<MenuOption> menuOptions;
+    private final AuditService auditService;
 
     public Menu() {
-        scanner = new Scanner(System.in);
-        customerMenu = new CustomerMenu();
-        accountMenu = new AccountMenu();
-        transactionMenu = new TransactionMenu();
+
+        auditService = AuditService.getInstance();
     }
 
-    public void displayMenu() {
+    public void displayMenu(Scanner scanner) {
         boolean exit = false;
-        int choice;
 
         while (!exit) {
-            System.out.println("===== BANK MANAGEMENT SYSTEM =====");
-            System.out.println("1. Customer Management");
-            System.out.println("2. Account Management");
-            System.out.println("3. Transaction Management");
-            System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            System.out.println("===== " + getMenuTitle() + " =====");
 
-            switch (choice) {
-                case 1:
-                    customerMenu.displayMenu();
-                    break;
-                case 2:
-                    accountMenu.displayMenu();
-                    break;
-                case 3:
-                    transactionMenu.displayMenu();
-                    break;
-                case 4:
-                    exit = true;
-                    break;
-                default:
+            // Display the menu options
+            for (int i = 0; i < menuOptions.size(); i++) {
+                System.out.println((i + 1) + ". " + menuOptions.get(i).getOptionName());
+            }
+
+            try {
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+
+                if (choice >= 1 && choice <= menuOptions.size()) {
+                    MenuOption selectedOption = menuOptions.get(choice - 1);
+
+                    if (selectedOption.getAction() == null) {
+                        exit = true;
+                    } else {
+                        performAction(selectedOption.getOptionName(), selectedOption.getAction(),scanner);
+                    }
+                } else {
                     System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Clear the invalid input
             }
         }
+    }
+    protected abstract String getMenuTitle();
+
+    private void performAction(String actionName, Consumer<Scanner> action, Scanner scanner) {
+        auditService.writeAuditEntry(actionName);
+        action.accept(scanner);
     }
 }
